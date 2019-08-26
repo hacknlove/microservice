@@ -1,2 +1,2 @@
-exports.app = require('./src/express')
-exports.db = require('./src/mongo').connect(process.env.MONGO_URL, process.env.MONGO_BD)
+exports.app = require('./express')
+exports.db = require('./mongo').connect(process.env.MONGO_URL, process.env.MONGO_BD)
