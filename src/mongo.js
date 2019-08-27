@@ -2,12 +2,9 @@
 const MongoClient = require('mongodb').MongoClient
 
 const proxyHandler = {
-  async get (target, name) {
-    if (name === 'then') {
-      return target.client.then
-    }
-    if (name === 'catch') {
-      return target.client.catch
+  get (target, name) {
+    if (name === 'client') {
+      return target.client
     }
     if (name === 'db') {
       return target.db
@@ -17,22 +14,18 @@ const proxyHandler = {
 }
 
 function connect (url = process.env.MONGO_URL, base = process.env.BASE) {
-  const dynamic = {}
-
   const client = MongoClient.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
-
   const deferred = {
-    client
+    client: client.then(client => {
+      deferred.db = client.db(base)
+      return client
+    })
   }
 
-  client.then(client => {
-    deferred.db = client.db(base)
-  })
-
-  return new Proxy(dynamic, proxyHandler)
+  return new Proxy(deferred, proxyHandler)
 }
 
 exports.connect = connect

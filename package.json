@@ -7,7 +7,7 @@
     "/src"
   ],
   "scripts": {
-    "test": "ava --watch"
+    "test": "cd tests; ./tests.sh"
   },
   "repository": {
     "type": "git",

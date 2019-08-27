@@ -1,0 +1,31 @@
+version: '3.2'
+services:
+  mongo:
+    image: mongo:latest
+    logging:
+      driver: none
+
+  test:
+    image: node:latest
+    user: node
+    depends_on:
+      - mongo
+    logging:
+      # driver: none
+      driver: json-file
+      options:
+        max-size: "200k"
+        max-file: "10"
+    volumes:
+      - type: bind
+        source: ../
+        target: /home/node/app
+    working_dir: /home/node/app
+    environment:
+      BASE: HumanBotNet
+      MONGO_URL: "mongodb://mongo/HumanBotNet?retryWrites=true"
+    expose:
+      - 5000
+    tty: true
+    stdin_open: true
+    command: 'npx ava --watch'
