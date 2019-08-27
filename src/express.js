@@ -10,6 +10,12 @@ function configure () {
   app.use(bodyParser.raw())
   app.use(bodyParser.text())
   app.use(throttle({ rate: '5/s' }))
+
+  app.use(function (req, res, next) {
+    res.error = (status, error, info) => res.status(status).json({ error, info })
+    next()
+  })
+
   return app
 }
 
