@@ -35,4 +35,4 @@ function connect (url = process.env.MONGO_URL, base = process.env.BASE) {
   return new Proxy(dynamic, proxyHandler)
 }
 
-module.exports = connect
+exports.connect = connect
