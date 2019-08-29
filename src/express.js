@@ -12,7 +12,15 @@ function configure () {
   app.use(throttle({ rate: '5/s' }))
 
   app.use(function (req, res, next) {
-    res.error = (error, info) => res.json({ error, info })
+    res.error = (error, info) => {
+      if (error.isJoi) {
+        return res.json({
+          error: `${error.details[0].context.key}_Validation`,
+          info: error
+        })
+      }
+      res.json({ error, info })
+    }
     next()
   })
 
