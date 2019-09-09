@@ -1,5 +1,5 @@
 const bodyParser = require('body-parser')
-var throttle = require('express-throttle')
+// var throttle = require('express-throttle')
 
 const app = require('express')()
 
@@ -9,7 +9,7 @@ function configure () {
   app.use(bodyParser.json({ strict: false }))
   app.use(bodyParser.raw())
   app.use(bodyParser.text())
-  app.use(throttle({ rate: '5/s' }))
+  // app.use(throttle({ burst: 30, rate: '5/s' }))
 
   app.use(function (req, res, next) {
     res.error = (error, info) => {
